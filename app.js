@@ -8,8 +8,8 @@ var app = express();
 // Load routes
 var user_routes = require('./routes/user');
 
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false})); // parse application/x-www-form-urlencoded
+app.use(bodyParser.json()); // parse application/json
 
 // Config Headers
 
