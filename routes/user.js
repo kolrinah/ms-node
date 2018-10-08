@@ -14,5 +14,7 @@ api.post('/user/register', UserController.saveUser);
 api.post('/user/login', UserController.loginUser);
 api.put('/user/update/:id',  md_auth.ensureAuth, UserController.updateUser);
 api.post('/user/upload-image/:id', [md_auth.ensureAuth, md_upload], UserController.uploadImage);
+api.get('/user/google-api-testing', UserController.googleTest);
+api.get('/user/to-googlesheet', UserController.UsersToGoogleSheet);
 
 module.exports = api;

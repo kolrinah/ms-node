@@ -10,7 +10,7 @@ mongoose.connect('mongodb://localhost:27017/cf_test',
     if (err) {
         throw err;
     } else {
-        console.log('DataBase runnig');
+        console.log('MongoDB DataBase runnig');
         app.listen(port, function(){
             console.log("Server API listening on http://localhost:" + port);
         });

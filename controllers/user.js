@@ -4,6 +4,9 @@ var bcrypt = require('bcrypt-nodejs');
 var User = require('../models/user');
 var jwt  = require('../services/jwt');
 
+const {google} = require('googleapis');
+const credentials = require('../credentials/credentials');
+
 function tests(req, res) {
     res.status(200).send({
         message: 'Testing user action controller'
@@ -131,10 +134,61 @@ function uploadImage(req, res) {
     }
 }
 
+function googleTest(req, res) {
+    const sheets = google.sheets({version: 'v4'});
+      sheets.spreadsheets.values.get({
+        key: credentials.key,
+        spreadsheetId: credentials.spreadsheetId,
+        range: 'Class Data!A2:E',    
+      }, (err, res) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        const rows = res.data.values;
+        if (rows.length) {
+          console.log('Name, Major:');
+          // Print columns A and E, which correspond to indices 0 and 4.
+          rows.map((row) => {
+            console.log(`${row[0]}, ${row[2]}, ${row[3]}`);
+          });
+        } else {
+            console.log('No data found.');
+        }
+      });
+
+      res.status(200).send({
+        message: 'Testing google-Api'
+    });
+}
+
+function UsersToGoogleSheet(req, res) {
+    
+    const sheets = google.sheets({version: 'v4'});
+      sheets.spreadsheets.values.update({
+        key: credentials.key,
+        spreadsheetId: credentials.spreadsheetId,
+        range: 'Sheet1!A2:D5',
+        majorDimension: "ROWS",
+        values: [
+          ["Item", "Cost", "Stocked", "Ship Date"],
+          ["Wheel", "$20.50", "4", "3/1/2016"],
+          ["Door", "$15", "2", "3/15/2016"],
+          ["Engine", "$100", "1", "30/20/2016"],
+          ["Totals", "=SUM(B2:B4)", "=SUM(C2:C4)", "=MAX(D2:D4)"]
+        ],        
+
+      }, (err, res) => {
+        if (err) return console.log('The API returned an error: ' + err);
+        
+        res.status(200).send({message: 'Cells written'});
+        
+      });
+}
+
 module.exports = {
     tests,
     saveUser,
     loginUser,
     updateUser,
-    uploadImage
+    uploadImage,
+    googleTest,
+    UsersToGoogleSheet
 };

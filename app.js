@@ -16,9 +16,4 @@ app.use(bodyParser.json()); // parse application/json
 // Base routes
 app.use('/api', user_routes);
 
-/*app.get('/tests', function(req, res) {
-        res.status(200).send({message: 'My first API',
-       // req
-    });
-});*/
 module.exports = app;
